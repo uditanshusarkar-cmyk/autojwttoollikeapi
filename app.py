@@ -24,13 +24,13 @@ IND_JSON_FILE = "ind_ind.json"
 TOKEN_JSON_FILE = "token_ind.json"
 
 # Flask app
-app = Flask(name)
+app = Flask(__name__)
 
 # Logging setup
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 # Maximum threads for parallel execution
-MAX_THREADS = 50  
+MAX_THREADS = 50
 MAX_RETRIES = 3  # Number of retries for failed requests
 
 
@@ -113,7 +113,6 @@ def upload_to_github():
     try:
         g = Github(GITHUB_TOKEN)
         repo = g.get_user().get_repo(GITHUB_REPO)
-
         file_path = TOKEN_JSON_FILE
         contents = None
 
@@ -125,11 +124,11 @@ def upload_to_github():
         with open(TOKEN_JSON_FILE, "r") as f:
             file_content = f.read()
             if contents:
-            repo.update_file(contents.path, "Updated JWT tokens", file_content, contents.sha)
-            logging.info("✅ Updated token_ind.json on GitHub")
-        else:
-            repo.create_file(file_path, "Added JWT tokens", file_content)
-            logging.info("✅ Uploaded token_ind.json to GitHub")
+                repo.update_file(contents.path, "Updated JWT tokens", file_content, contents.sha)
+                logging.info("✅ Updated token_ind.json on GitHub")
+            else:
+                repo.create_file(file_path, "Added JWT tokens", file_content)
+                logging.info("✅ Uploaded token_ind.json to GitHub")
 
     except Exception as e:
         logging.error(f"❌ GitHub upload error: {e}")
@@ -157,6 +156,6 @@ def schedule_task():
 # Run schedule in background
 threading.Thread(target=schedule_task, daemon=True).start()
 
-if name == "main":
+if __name__ == "__main__":
     fetch_jwt_tokens()  # Run immediately on start
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000)
