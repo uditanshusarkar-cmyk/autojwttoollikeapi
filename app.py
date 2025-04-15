@@ -17,7 +17,7 @@ GITHUB_REPO = os.getenv("GITHUB_REPO")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 # API URL
-TOKEN_API_URL = "https://uditashu-jwt.vercel.app/token?uid={}&password={}"
+TOKEN_API_URL = "http://narayan-gwt.vercel.app/token?uid={}&password={}"
 
 # File paths
 IND_JSON_FILE = "ind_ind.json"
